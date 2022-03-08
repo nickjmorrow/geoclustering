@@ -2,7 +2,7 @@
 
 ~The demo can be found [here](https://geoclustering.netlify.app/).~
 
-EDIT: I've stopped paying for the database for this, but if you want to check out the broken UI, you still can :) 
+EDIT: I've stopped paying for the database for this, but if you want to check out just the (broken) frontend, you still can at the link above :) 
 
 ## At a Glance
 
