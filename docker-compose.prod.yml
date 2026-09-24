@@ -15,9 +15,20 @@
 #     its per-visitor upload limit.
 #   * restart: unless-stopped, so a crash or a reboot recovers.
 #
+#   * CPU and memory caps, and rotated logs. The demo shares a small server
+#     with other projects; a flood of uploads should slow this app down, not
+#     every app on the machine, and a year of request logs should not fill
+#     the disk. (Docker keeps container logs forever unless told otherwise.)
+#
 # There is no database, and so no migrations, no volume, no backups and no
 # nightly reset: nothing a visitor does is stored on the server.
 name: geoclustering-prod
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '3'
 
 services:
   backend:
@@ -28,6 +39,18 @@ services:
     environment:
       LOG_FORMAT: json
       UPLOADS_PER_MINUTE: ${UPLOADS_PER_MINUTE:-20}
+      # Clusterings running at once, across all visitors. Past it an upload
+      # waits up to five seconds for a slot, then gets a 503 asking to retry.
+      CONCURRENT_CLUSTERINGS: ${CONCURRENT_CLUSTERINGS:-2}
+    # One core at most: clustering is CPU-bound, and the other core belongs
+    # to the other apps on the server. 512 MB is several times what 500
+    # places need.
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    logging: *logging
 
   frontend:
     build:
@@ -41,6 +64,12 @@ services:
       # from outside even behind a firewall, because Docker writes its own
       # iptables rules ahead of ufw's.
       - '${PUBLIC_BIND_ADDRESS:-0.0.0.0}:${PUBLIC_PORT:-80}:80'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    logging: *logging
     depends_on:
       backend:
         condition: service_healthy

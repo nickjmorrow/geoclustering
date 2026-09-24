@@ -5,6 +5,8 @@ using System.Text;
 using Geoclustering.Api;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Geoclustering.Tests;
 
@@ -98,6 +100,24 @@ public class ApiTests(WebApplicationFactory<Program> factory) : IClassFixture<We
         var response = await _client.PostAsync(new Uri("/api/clusterings", UriKind.Relative), Upload(huge, "huge.kml"), TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.RequestEntityTooLarge, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task When_every_clustering_slot_is_busy_an_upload_is_a_503_problem()
+    {
+        var cancellationToken = TestContext.Current.CancellationToken;
+        using var gate = new ClusteringGate(1, TimeSpan.FromMilliseconds(50));
+        using var held = await gate.TryEnterAsync(cancellationToken);
+        using var client = factory
+            .WithWebHostBuilder(b => b.ConfigureTestServices(s => s.AddSingleton(gate)))
+            .CreateClient();
+        const string Kml = "<kml><Placemark><Point><coordinates>1,2</coordinates></Point></Placemark></kml>";
+
+        var response = await client.PostAsync(new Uri("/api/clusterings", UriKind.Relative), Upload(Kml, "x.kml"), cancellationToken);
+
+        Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+        var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken);
+        Assert.Contains("Try again", problem!.Detail, StringComparison.Ordinal);
     }
 
     [Fact]

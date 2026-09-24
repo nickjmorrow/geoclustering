@@ -62,7 +62,7 @@ Limits that shape the contract, all constants beside the code they govern:
 ## Backend
 
 - **Minimal APIs in `Program.cs`**, which is also the only place that reads
-  configuration (`LOG_FORMAT`, `UPLOADS_PER_MINUTE`). Everything else is a
+  configuration (`LOG_FORMAT`, `UPLOADS_PER_MINUTE`, `CONCURRENT_CLUSTERINGS`). Everything else is a
   constant next to the code it governs.
 - **Errors are problem details with a sentence in `detail`**, written for the
   person who uploaded the file ("This file has 812 places; the limit is 500.
@@ -76,6 +76,12 @@ Limits that shape the contract, all constants beside the code they govern:
 - **Deterministic output.** Ties in the merge loop go to the lowest index, and
   nothing is random. The same file must always produce the same clusters,
   colors and routes; tests rely on it and so do shared links.
+- **Load is bounded three ways**, because the demo shares a small server:
+  per visitor (`UPLOADS_PER_MINUTE`, the rate limiter), across all visitors
+  (`CONCURRENT_CLUSTERINGS`, `ClusteringGate`: a slot or a 503 within five
+  seconds), and per container (CPU, memory and log-size caps in
+  `docker-compose.prod.yml`). Anything new that does real work per request
+  goes behind the gate.
 - **Logging** uses `[LoggerMessage]` source generation (the analyzers insist).
 - Warnings are errors, `AnalysisLevel` is `latest-recommended`, and
   `dotnet format --verify-no-changes` runs in CI. Tests may use

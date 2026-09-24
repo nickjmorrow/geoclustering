@@ -70,7 +70,10 @@ API keys.** The conventions, and the reasoning behind them, live in
 - **Uploads are treated as hostile.** XML DTDs are refused (no entity expansion
   and no external fetches), a KMZ is unzipped with a hard size cap rather than
   trusting its header, uploads are limited to 5 MB and to 20 per visitor per
-  minute, and place names are only ever rendered as text.
+  minute, at most two clusterings run at once across all visitors, and place
+  names are only ever rendered as text. The containers are capped at a core
+  and a few hundred megabytes, so a flood of uploads slows this demo down
+  without starving the other apps on its server.
 - **Color follows the cluster, not its rank.** When a cluster splits, the
   larger half keeps its color, so moving the slider one step recolors at most
   one group. Every group also carries its number on the map and in the list,

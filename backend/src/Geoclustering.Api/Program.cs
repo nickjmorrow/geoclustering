@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 // constant next to the code it governs.
 var logFormat = builder.Configuration["LOG_FORMAT"] ?? "console";
 var uploadsPerMinute = builder.Configuration.GetValue("UPLOADS_PER_MINUTE", 20);
+var concurrentClusterings = builder.Configuration.GetValue("CONCURRENT_CLUSTERINGS", 2);
 
 if (logFormat == "json")
 {
@@ -25,6 +26,7 @@ if (logFormat == "json")
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<SampleCatalog>();
+builder.Services.AddSingleton(new ClusteringGate(concurrentClusterings, TimeSpan.FromSeconds(5)));
 
 builder.Services.Configure<FormOptions>(o => o.MultipartBodyLengthLimit = MaxUploadBytes);
 builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = MaxUploadBytes + (64 * 1024));
@@ -99,7 +101,7 @@ api.MapGet("/samples/{id}/file", (string id, SampleCatalog samples) =>
             : Results.Problem(title: "No such sample", detail: $"There is no sample called '{id}'.", statusCode: 404))
     .WithSummary("A demo dataset's KML file, to see what an upload looks like");
 
-api.MapPost("/clusterings", async (HttpRequest request, ILogger<Program> logger) =>
+api.MapPost("/clusterings", async (HttpRequest request, ClusteringGate gate, ILogger<Program> logger) =>
     {
         // The form is read here rather than bound as a parameter, so that a
         // malformed or oversized body is this endpoint's 400 or 413 with a
@@ -120,6 +122,16 @@ api.MapPost("/clusterings", async (HttpRequest request, ILogger<Program> logger)
         if (file is null || file.Length == 0)
         {
             return Results.Problem(title: "No file", detail: "Choose a KML, KMZ or GeoJSON file to upload.", statusCode: 400);
+        }
+
+        using var slot = await gate.TryEnterAsync(request.HttpContext.RequestAborted);
+        if (slot is null)
+        {
+            Log.Busy(logger, gate.Limit);
+            return Results.Problem(
+                title: "Busy",
+                detail: "Lots of people are clustering places right now. Try again in a few seconds.",
+                statusCode: StatusCodes.Status503ServiceUnavailable);
         }
 
         try
@@ -154,4 +166,7 @@ internal static partial class Log
 {
     [LoggerMessage(Level = LogLevel.Information, Message = "Clustered {PlaceCount} places ({Skipped} skipped)")]
     public static partial void Clustered(ILogger logger, int placeCount, int skipped);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Turned away an upload: all {Limit} clustering slots were busy")]
+    public static partial void Busy(ILogger logger, int limit);
 }
