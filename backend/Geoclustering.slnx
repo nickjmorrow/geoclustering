@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Geoclustering.Api/Geoclustering.Api.csproj" />
+    <Project Path="src/Geoclustering.Clustering/Geoclustering.Clustering.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Geoclustering.Tests/Geoclustering.Tests.csproj" />
+  </Folder>
+</Solution>

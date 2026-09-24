@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Two independent jobs rather than one: a frontend typo should not cost you
+# the backend signal, and they run in parallel for free.
+#
+# Each job installs its toolchain and then hands off to `scripts/check.sh`,
+# the SAME script the pre-commit hook runs. A hook that checks something
+# different from CI is worse than no hook.
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Reads the SDK version from backend/global.json, so CI, the Dockerfile
+      # and your machine agree on it.
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: backend/global.json
+
+      # dotnet format, dotnet build (warnings are errors), dotnet test. No
+      # services and no secrets: the API is stateless and nothing in the suite
+      # reaches the network.
+      - name: Checks
+        run: scripts/check.sh backend
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # No `version:` — it reads `packageManager` from frontend/package.json.
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: frontend/package.json
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: frontend
+
+      # eslint, prettier --check, tsc, vitest, and `vite build` — which is not
+      # redundant with tsc: it proves the bundle actually resolves and builds.
+      - name: Checks
+        run: scripts/check.sh frontend

@@ -1,0 +1,46 @@
+# The PRODUCTION stack. `docker-compose.yml` is the development one.
+#
+#   docker compose -f docker-compose.prod.yml --env-file .env.prod up --build -d
+#
+# What differs from development, and why:
+#
+#   * The frontend is a built bundle served by nginx, which also proxies /api
+#     to the backend — the job Vite's dev proxy does in development. Without
+#     it the bundle has no route to the API at all.
+#   * The backend is the published runtime image, running as an unprivileged
+#     user, with JSON logs.
+#   * No source mounts: the image is the artifact.
+#   * The backend's port is not published. Only nginx, on this network,
+#     reaches it — which is also what lets the API trust X-Forwarded-For for
+#     its per-visitor upload limit.
+#   * restart: unless-stopped, so a crash or a reboot recovers.
+#
+# There is no database, and so no migrations, no volume, no backups and no
+# nightly reset: nothing a visitor does is stored on the server.
+name: geoclustering-prod
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: production
+    restart: unless-stopped
+    environment:
+      LOG_FORMAT: json
+      UPLOADS_PER_MINUTE: ${UPLOADS_PER_MINUTE:-20}
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+    restart: unless-stopped
+    ports:
+      # The interface is a variable as well as the port. Behind a TLS proxy on
+      # the same host (Caddy, as scripts/deploy.sh sets up) this must be
+      # 127.0.0.1: published on 0.0.0.0, the plain-HTTP port stays reachable
+      # from outside even behind a firewall, because Docker writes its own
+      # iptables rules ahead of ufw's.
+      - '${PUBLIC_BIND_ADDRESS:-0.0.0.0}:${PUBLIC_PORT:-80}:80'
+    depends_on:
+      backend:
+        condition: service_healthy

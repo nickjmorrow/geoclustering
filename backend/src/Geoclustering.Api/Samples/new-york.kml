@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>New York City</name>
+    <Folder>
+      <name>Sights</name>
+      <Placemark>
+        <name>Statue of Liberty</name>
+        <Point>
+          <coordinates>-74.0445,40.6892,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Battery Park</name>
+        <Point>
+          <coordinates>-74.017,40.7033,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Charging Bull</name>
+        <Point>
+          <coordinates>-74.0134,40.7056,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>9/11 Memorial &amp; Museum</name>
+        <Point>
+          <coordinates>-74.0134,40.7115,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>One World Observatory</name>
+        <Point>
+          <coordinates>-74.0132,40.7131,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Brooklyn Bridge</name>
+        <Point>
+          <coordinates>-73.9969,40.7061,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>South Street Seaport</name>
+        <Point>
+          <coordinates>-74.0036,40.7063,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Washington Square Park</name>
+        <Point>
+          <coordinates>-73.9973,40.7308,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Stonewall National Monument</name>
+        <Point>
+          <coordinates>-74.0021,40.7338,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Little Island</name>
+        <Point>
+          <coordinates>-74.0103,40.742,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Flatiron Building</name>
+        <Point>
+          <coordinates>-73.9897,40.7411,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Empire State Building</name>
+        <Point>
+          <coordinates>-73.9857,40.7484,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Vessel</name>
+        <Point>
+          <coordinates>-74.0022,40.7538,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bryant Park</name>
+        <Point>
+          <coordinates>-73.9832,40.7536,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Grand Central Terminal</name>
+        <Point>
+          <coordinates>-73.9772,40.7527,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Chrysler Building</name>
+        <Point>
+          <coordinates>-73.9755,40.7516,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Times Square</name>
+        <Point>
+          <coordinates>-73.9855,40.758,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Top of the Rock</name>
+        <Point>
+          <coordinates>-73.9794,40.7593,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>St. Patrick's Cathedral</name>
+        <Point>
+          <coordinates>-73.976,40.7585,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bethesda Terrace</name>
+        <Point>
+          <coordinates>-73.9708,40.774,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Strawberry Fields</name>
+        <Point>
+          <coordinates>-73.975,40.7757,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Cathedral of St. John the Divine</name>
+        <Point>
+          <coordinates>-73.9619,40.8038,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Apollo Theater</name>
+        <Point>
+          <coordinates>-73.95,40.81,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Yankee Stadium</name>
+        <Point>
+          <coordinates>-73.9262,40.8296,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>DUMBO</name>
+        <Point>
+          <coordinates>-73.9894,40.7033,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Brooklyn Bridge Park</name>
+        <Point>
+          <coordinates>-73.9967,40.7003,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Brooklyn Heights Promenade</name>
+        <Point>
+          <coordinates>-73.9975,40.696,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Grand Army Plaza</name>
+        <Point>
+          <coordinates>-73.97,40.674,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Prospect Park</name>
+        <Point>
+          <coordinates>-73.969,40.6602,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Domino Park</name>
+        <Point>
+          <coordinates>-73.9681,40.7142,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gantry Plaza State Park</name>
+        <Point>
+          <coordinates>-73.958,40.746,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Unisphere</name>
+        <Point>
+          <coordinates>-73.8448,40.7466,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Coney Island Boardwalk</name>
+        <Point>
+          <coordinates>-73.98,40.5733,0</coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>Museums</name>
+      <Placemark>
+        <name>Tenement Museum</name>
+        <Point>
+          <coordinates>-73.99,40.7188,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Whitney Museum of American Art</name>
+        <Point>
+          <coordinates>-74.0089,40.7396,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>New York Public Library</name>
+        <Point>
+          <coordinates>-73.9822,40.7532,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Museum of Modern Art</name>
+        <Point>
+          <coordinates>-73.9776,40.7614,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>American Museum of Natural History</name>
+        <Point>
+          <coordinates>-73.974,40.7813,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Metropolitan Museum of Art</name>
+        <Point>
+          <coordinates>-73.9632,40.7794,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Guggenheim Museum</name>
+        <Point>
+          <coordinates>-73.959,40.783,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Met Cloisters</name>
+        <Point>
+          <coordinates>-73.9319,40.8649,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Brooklyn Museum</name>
+        <Point>
+          <coordinates>-73.9636,40.6712,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Brooklyn Botanic Garden</name>
+        <Point>
+          <coordinates>-73.9624,40.6694,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>MoMA PS1</name>
+        <Point>
+          <coordinates>-73.947,40.7455,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Queens Museum</name>
+        <Point>
+          <coordinates>-73.8467,40.7458,0</coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>Food</name>
+      <Placemark>
+        <name>Katz's Delicatessen</name>
+        <Point>
+          <coordinates>-73.9874,40.7223,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Chinatown</name>
+        <Point>
+          <coordinates>-73.997,40.7158,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Chelsea Market</name>
+        <Point>
+          <coordinates>-74.006,40.7424,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Strand</name>
+        <Point>
+          <coordinates>-73.9907,40.7332,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Smorgasburg Williamsburg</name>
+        <Point>
+          <coordinates>-73.962,40.7215,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Arthur Avenue Retail Market</name>
+        <Point>
+          <coordinates>-73.8883,40.8547,0</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Flushing Chinatown</name>
+        <Point>
+          <coordinates>-73.8303,40.759,0</coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>

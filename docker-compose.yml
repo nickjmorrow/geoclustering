@@ -1,0 +1,47 @@
+# The DEVELOPMENT stack. `docker-compose.prod.yml` is the production one.
+#
+#   docker compose up
+#
+# Two containers and no database: the API is stateless — it clusters what it
+# is sent and forgets it — and uploads are kept in the visitor's browser.
+#
+# Ports are 3003 and 8003 so this runs alongside the author's other demos
+# (clinical-copilot on 3000/8000, payout-ledger on 3001/8001, ranked-choice
+# on 3002/8002).
+name: geoclustering
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    ports:
+      - '8003:8000'
+    volumes:
+      # Source mounted for `dotnet watch`; bin/ and obj/ kept in the container
+      # so the host's build output (if any) never collides with Linux's.
+      - ./backend:/src
+      - /src/src/Geoclustering.Api/bin
+      - /src/src/Geoclustering.Api/obj
+      - /src/src/Geoclustering.Clustering/bin
+      - /src/src/Geoclustering.Clustering/obj
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:8000/api/health >/dev/null || exit 1']
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    ports:
+      - '3003:3003'
+    environment:
+      BACKEND_ORIGIN: http://backend:8000
+    volumes:
+      - ./frontend:/srv
+      - /srv/node_modules
+    depends_on:
+      - backend

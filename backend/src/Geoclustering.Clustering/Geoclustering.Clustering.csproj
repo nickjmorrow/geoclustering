@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    The algorithm, and nothing else: no ASP.NET, no file formats, no I/O.
+    Places in, a dendrogram out. Everything here is a pure function of its
+    input, which is what makes it cheap to test exhaustively.
+  -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Geoclustering.Tests" />
+  </ItemGroup>
+</Project>

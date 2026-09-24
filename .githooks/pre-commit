@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# Runs the checks before a commit is made. Enable once per clone:
+#
+#     git config core.hooksPath .githooks     # or run scripts/setup.sh
+#
+# It checks the working tree, not the index, and only the halves you touched,
+# with --fast. It is the fast subset of the same script CI runs, not a
+# different set of rules. `git commit --no-verify` skips it; CI still runs.
+
+set -uo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT" || exit 1
+
+STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
+[ -z "$STAGED" ] && exit 0
+
+ARGS=()
+grep -qE '^backend/' <<<"$STAGED" && ARGS+=(backend)
+grep -qE '^frontend/' <<<"$STAGED" && ARGS+=(frontend)
+
+if [ ${#ARGS[@]} -eq 0 ]; then
+  exit 0
+fi
+if [ ${#ARGS[@]} -eq 2 ]; then
+  ARGS=(all)
+fi
+
+if ! scripts/check.sh "${ARGS[@]}" --fast; then
+  cat >&2 <<'MSG'
+
+Commit aborted: the checks above failed.
+
+  scripts/check.sh --fast        run them again
+  cd backend  && dotnet format Geoclustering.slnx
+  cd frontend && pnpm lint:fix && pnpm format
+
+  git commit --no-verify         commit anyway (CI will still run)
+MSG
+  exit 1
+fi

@@ -1,0 +1,102 @@
+/* Tailwind v4: one import, no config file. Customization is the @theme block. */
+@import 'tailwindcss';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+@theme {
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-surface: oklch(0.99 0 0);
+  --color-surface-raised: oklch(0.97 0.002 260);
+  --color-ink: oklch(0.22 0.01 260);
+  /* 0.50, not lighter: muted text sits on `surface-raised` as often as on
+     `surface`, and has to clear WCAG AA (4.5:1) on both. */
+  --color-ink-muted: oklch(0.5 0.015 260);
+  --color-accent: oklch(0.55 0.15 260);
+  --color-on-accent: oklch(0.99 0 0);
+  --color-danger: oklch(0.52 0.2 25);
+
+  /* Invisible for 300ms, then a quick fade: a fast load shows nothing rather
+     than flashing a spinner. */
+  --animate-appear: appear 0.2s ease-out 0.3s both;
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* One dark block, keyed off the attribute `useTheme` and `public/theme.js`
+   write — see useTheme.ts for why it is not a media query. `color-scheme`
+   is what the browser's own controls (the range slider, scrollbars) read. */
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-surface: oklch(0.19 0.008 260);
+  --color-surface-raised: oklch(0.24 0.01 260);
+  --color-ink: oklch(0.95 0.005 260);
+  --color-ink-muted: oklch(0.68 0.015 260);
+  --color-accent: oklch(0.68 0.14 260);
+  --color-on-accent: oklch(0.19 0.008 260);
+  --color-danger: oklch(0.7 0.17 25);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+input[type='range'] {
+  accent-color: var(--color-accent);
+}
+
+/* MapLibre's controls and popups are white by default; in the dark theme they
+   should belong to the page rather than glare out of it. */
+.maplibregl-popup-content {
+  background: var(--color-surface-raised);
+  color: var(--color-ink);
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  font:
+    500 0.75rem/1.25rem system-ui,
+    sans-serif;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+}
+.maplibregl-popup-tip {
+  display: none;
+}
+:root[data-theme='dark'] .maplibregl-ctrl-group,
+:root[data-theme='dark'] .maplibregl-ctrl-attrib {
+  background: var(--color-surface-raised);
+  color: var(--color-ink-muted);
+}
+:root[data-theme='dark'] .maplibregl-ctrl-group button + button {
+  border-top-color: rgb(255 255 255 / 0.1);
+}
+:root[data-theme='dark'] .maplibregl-ctrl-icon,
+:root[data-theme='dark'] .maplibregl-ctrl-attrib-button {
+  filter: invert(1);
+}
+:root[data-theme='dark'] .maplibregl-ctrl-attrib a {
+  color: var(--color-ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
